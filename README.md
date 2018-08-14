@@ -13,16 +13,16 @@ In order to compile this extension, verify that you have `pg_config` in your pat
 should be part of the postgresql development tools).
 Then, execute:
 
-`gcc -I$(pg_config --includedir) -fPIC -MMD -MP -MF pgutft.o.d -o pgutft.o pgutft.c`
-`gcc -o libpgUTF-T.so pgutft.o -shared -fPIC`
-`cp pgutft.o $(pg_config --pkglibdir)`
+```gcc -I$(pg_config --includedir) -fPIC -MMD -MP -MF pgutft.o.d -o pgutft.o pgutft.c
+gcc -o libpgUTF-T.so pgutft.o -shared -fPIC
+cp pgutft.o $(pg_config --pkglibdir)```
 
 once the library is installed in the postgresql extension directory, connect to your database
 as super user and execute
 
-`CREATE FUNCTION utft_to_utf8(bytea) RETURNS text
+```CREATE FUNCTION utft_to_utf8(bytea) RETURNS text
       AS 'libpgUTF-T.so', 'utft_to_utf8'
-      LANGUAGE C STRICT;`
+      LANGUAGE C STRICT;```
 
 If you want to let other users uses it, grant them the access to the function this way:
 `GRANT ALL ON FUNCTION utft_to_utf8(bytea) TO `username`;`
