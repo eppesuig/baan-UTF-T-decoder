@@ -26,7 +26,7 @@ as super user and execute
 CREATE FUNCTION utft_to_utf8(bytea) RETURNS text
       AS 'libpgUTF-T.so', 'utft_to_utf8'
       LANGUAGE C STRICT;
-      ```
+```
 
 If you want to let other users uses it, grant them the access to the function this way:
 `GRANT ALL ON FUNCTION utft_to_utf8(bytea) TO `username`;`
