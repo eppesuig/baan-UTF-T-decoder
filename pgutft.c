@@ -86,14 +86,14 @@ Datum utft_to_utf8(PG_FUNCTION_ARGS)
             /* Codifica UTF-T multibyte su 4 byte. Il primo deve essere 0x9B, gli altri contengono il dato
              * Se il secondo è 0xBC allora il dato occupa solo gli ultimi 2
              * Se il secondo è 0xBC e il terzo 0x81 allora il dato occupa solo l'ultimo
-             * Dei 3, 2 o 1 byte dui dati, vanno presi e concatenati solo gli ultimi 7 bit */
+             * Dei 3, 2 o 1 byte di dati, vanno presi e concatenati solo gli ultimi 7 bit */
             unsigned char b1 = (unsigned char)(in->vl_dat[indexT+1]);
             unsigned char b2 = (unsigned char)(in->vl_dat[indexT+2]);
             unsigned char b3 = (unsigned char)(in->vl_dat[indexT+3]);
             indexT += 4;
 
             /* Unendo i 21 bit restanti, ho il codice Unicode del carattere */
-            unsigned long c = ((b3 & 127) | ((b2 & 127)<<7) | ((b3 & 127)<<14)) - 0x0F0000UL;
+            unsigned long c = ((b3 & 127) | ((b2 & 127)<<7) | ((b1 & 127)<<14)) - 0x0F0000UL;
 
             if (c < 0x7F) {
                 // codifico c in UTF-8 su un solo byte
